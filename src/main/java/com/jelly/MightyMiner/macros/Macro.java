@@ -3,12 +3,9 @@ package com.jelly.MightyMiner.macros;
 import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.baritone.automine.logging.Logger;
 import com.jelly.MightyMiner.events.BlockChangeEvent;
-import com.jelly.MightyMiner.features.FuelFilling;
+import com.jelly.MightyMiner.features.impl.FuelFilling;
 import com.jelly.MightyMiner.handlers.MacroHandler;
-import com.jelly.MightyMiner.macros.macros.CommissionMacro;
-import com.jelly.MightyMiner.macros.macros.MithrilMacro;
 
-import com.jelly.MightyMiner.utils.BlockUtils.BlockUtils;
 import com.jelly.MightyMiner.utils.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
@@ -16,8 +13,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import javax.crypto.Mac;
 
 public abstract class Macro {
     protected Minecraft mc = Minecraft.getMinecraft();

@@ -3,7 +3,7 @@ package com.jelly.MightyMiner.handlers;
 import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.events.BlockChangeEvent;
 import com.jelly.MightyMiner.events.ReceivePacketEvent;
-import com.jelly.MightyMiner.features.MobKiller;
+import com.jelly.MightyMiner.features.impl.MobKiller;
 import com.jelly.MightyMiner.config.aotv.AOTVWaypointsStructs;
 import com.jelly.MightyMiner.macros.Macro;
 import com.jelly.MightyMiner.macros.macros.*;

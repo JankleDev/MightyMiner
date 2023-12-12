@@ -1,0 +1,26 @@
+package com.jelly.MightyMiner.features;
+
+import com.jelly.MightyMiner.features.impl.general.AutoRotation;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
+public class FeatureManager {
+    private static FeatureManager instance = null;
+    public static FeatureManager getInstance() {
+        if (instance == null) {
+            instance = new FeatureManager();
+        }
+        return instance;
+    }
+
+    private List<IFeature> features;
+
+    public List<IFeature> loadFeatures(){
+        this.features = Arrays.asList(
+            AutoRotation.getInstance()
+        );
+        return this.features;
+    }
+}

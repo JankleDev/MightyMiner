@@ -4,13 +4,12 @@ import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.baritone.automine.AutoMineBaritone;
 import com.jelly.MightyMiner.baritone.automine.config.BaritoneConfig;
 import com.jelly.MightyMiner.baritone.automine.config.MiningType;
-import com.jelly.MightyMiner.features.Failsafes;
-import com.jelly.MightyMiner.features.FuelFilling;
-import com.jelly.MightyMiner.features.PingAlert;
+import com.jelly.MightyMiner.features.impl.Failsafes;
+import com.jelly.MightyMiner.features.impl.FuelFilling;
+import com.jelly.MightyMiner.features.impl.PingAlert;
 import com.jelly.MightyMiner.handlers.KeybindHandler;
 import com.jelly.MightyMiner.handlers.MacroHandler;
 import com.jelly.MightyMiner.macros.Macro;
-import com.jelly.MightyMiner.mixins.accessors.RenderGlobalAccessor;
 import com.jelly.MightyMiner.player.Rotation;
 import com.jelly.MightyMiner.utils.*;
 import com.jelly.MightyMiner.utils.BlockUtils.BlockData;
@@ -18,7 +17,6 @@ import com.jelly.MightyMiner.utils.BlockUtils.BlockUtils;
 import com.jelly.MightyMiner.utils.HypixelUtils.MineUtils;
 
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.BlockPos;
@@ -30,7 +28,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MithrilMacro extends Macro {
 

@@ -1,5 +1,6 @@
 package com.jelly.MightyMiner.utils;
 
+import com.jelly.MightyMiner.features.impl.helper.Angle;
 import com.jelly.MightyMiner.utils.BlockUtils.BlockUtils;
 import com.jelly.MightyMiner.utils.Utils.MathUtils;
 import net.minecraft.block.Block;
@@ -15,12 +16,17 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class AngleUtils {
 
-    static final List<Block> lookAtCenterBlocks = new ArrayList<Block>(){
+    static final List<Block> lookAtCenterBlocks = new ArrayList<Block>() {
         {
             add(Blocks.stained_glass_pane);
         }
     };
+
     private static final Minecraft mc = Minecraft.getMinecraft();
+
+    public static Angle getPlayerAngle() {
+        return new Angle(getActualRotationYaw(mc.thePlayer.rotationYaw), mc.thePlayer.rotationPitch);
+    }
 
     public static float get360RotationYaw(float yaw) {
         return (yaw % 360 + 360) % 360;
@@ -40,8 +46,8 @@ public class AngleUtils {
 
     public static float getActualRotationYaw(float yaw) { //f3
         return yaw > 0 ?
-                (yaw % 360 > 180 ? -(180 - (yaw % 360 - 180)) : yaw % 360) :
-                (-yaw % 360 > 180 ? (180 - (-yaw % 360 - 180)) : -(-yaw % 360));
+            (yaw % 360 > 180 ? -(180 - (yaw % 360 - 180)) : yaw % 360) :
+            (-yaw % 360 > 180 ? (180 - (-yaw % 360 - 180)) : -(-yaw % 360));
     }
 
     public static float antiClockwiseDifference(float initialYaw360, float targetYaw360) {
@@ -58,7 +64,6 @@ public class AngleUtils {
     }
 
 
-
     public static float getClosest() {
         if (get360RotationYaw() < 45 || get360RotationYaw() > 315) {
             return 0f;
@@ -70,6 +75,7 @@ public class AngleUtils {
             return 270f;
         }
     }
+
     public static float getClosest(float yaw) {
         if (yaw < 45 || yaw > 315) {
             return 0f;
@@ -81,10 +87,12 @@ public class AngleUtils {
             return 270f;
         }
     }
-    public static boolean shouldLookAtCenter(BlockPos blockPos){
+
+    public static boolean shouldLookAtCenter(BlockPos blockPos) {
         return shouldLookAtCenter(BlockUtils.getBlock(blockPos));
     }
-    public static boolean shouldLookAtCenter(Block block){
+
+    public static boolean shouldLookAtCenter(Block block) {
         return lookAtCenterBlocks.contains(block);
     }
 
@@ -95,7 +103,7 @@ public class AngleUtils {
 
         BlockUtils.BlockSides blockSideToMine = getOptimalSide(blockLookingAt);
 
-        switch (blockSideToMine){
+        switch (blockSideToMine) {
             case posX:
                 deltaX += 0.5d;
                 break;
@@ -110,7 +118,7 @@ public class AngleUtils {
                 break;
         }
 
-        return  getRequiredYaw(deltaX, deltaZ);
+        return getRequiredYaw(deltaX, deltaZ);
     }
 
     public static Tuple<Float, Float> getRotation(Vec3 vec3) {
@@ -139,10 +147,10 @@ public class AngleUtils {
     }
 
     public static float getRequiredYaw(double deltaX, double deltaZ) {
-        if(deltaX == 0 && deltaZ < 0) // special case
+        if (deltaX == 0 && deltaZ < 0) // special case
             return -180f;
 
-        return  (float) (Math.atan(-deltaX / deltaZ) * 180 / Math.PI) + ((deltaX > 0 && deltaZ < 0) ? -180 : 0) + ((deltaX < 0 && deltaZ < 0) ? 180 : 0);
+        return (float) (Math.atan(-deltaX / deltaZ) * 180 / Math.PI) + ((deltaX > 0 && deltaZ < 0) ? -180 : 0) + ((deltaX < 0 && deltaZ < 0) ? 180 : 0);
     }
 
     public static float wrapAngleTo180(double angle) {
@@ -155,10 +163,10 @@ public class AngleUtils {
         return Math.abs(actualYaw - neededChangeYaw) < diff && Math.abs(actualPitch - neededChangePitch) < diff;
     }
 
-    public static float getAngleDifference(float actualYaw1, float actualYaw2){
-        if(actualYaw1 - actualYaw2 > 180) {
+    public static float getAngleDifference(float actualYaw1, float actualYaw2) {
+        if (actualYaw1 - actualYaw2 > 180) {
             return Math.abs(actualYaw1 - 360 - actualYaw2);
-        } else if(actualYaw1 - actualYaw2 < -180){
+        } else if (actualYaw1 - actualYaw2 < -180) {
             return Math.abs(actualYaw2 - 360 - actualYaw1);
         } else return Math.abs(actualYaw1 - actualYaw2);
     }
@@ -176,8 +184,8 @@ public class AngleUtils {
     public static Pair<Float, Float> getYawAndPitch(final Vec3 vec, final boolean predict) {
         final Vec3 eyesPos = new Vec3(mc.thePlayer.posX, mc.thePlayer.getEntityBoundingBox().minY + mc.thePlayer.getEyeHeight(), mc.thePlayer.posZ);
 
-        if(predict) {
-            if(mc.thePlayer.onGround) {
+        if (predict) {
+            if (mc.thePlayer.onGround) {
                 eyesPos.addVector(mc.thePlayer.motionX, 0.0, mc.thePlayer.motionZ);
             } else eyesPos.addVector(mc.thePlayer.motionX, mc.thePlayer.motionY, mc.thePlayer.motionZ);
         }
@@ -187,8 +195,8 @@ public class AngleUtils {
         final double diffZ = vec.zCoord - eyesPos.zCoord;
 
         return Pair.of(AngleUtils.wrapAngleTo180((double) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F),
-                AngleUtils.wrapAngleTo180((double) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ))))
-        ));
+            AngleUtils.wrapAngleTo180((double) (-Math.toDegrees(Math.atan2(diffY, Math.sqrt(diffX * diffX + diffZ * diffZ))))
+            ));
     }
 
     public static float getRequiredPitchSide(BlockPos blockLookingAt) {
@@ -198,7 +206,7 @@ public class AngleUtils {
 
         BlockUtils.BlockSides blockSideToMine = getOptimalSide(blockLookingAt);
 
-        switch (blockSideToMine){
+        switch (blockSideToMine) {
             case posX:
                 deltaX += 0.5d;
                 break;
@@ -220,47 +228,47 @@ public class AngleUtils {
         }
 
 
-        return  getRequiredPitch(deltaX, deltaY, deltaZ);
+        return getRequiredPitch(deltaX, deltaY, deltaZ);
     }
 
     public static float getRequiredPitchCenter(BlockPos blockLookingAt) {
         double deltaX = blockLookingAt.getX() - mc.thePlayer.posX + 0.5d;
         double deltaZ = blockLookingAt.getZ() - mc.thePlayer.posZ + 0.5d;
         double deltaY = (blockLookingAt.getY() + 0.5d) - (mc.thePlayer.posY + 1.62d);
-        return  getRequiredPitch(deltaX, deltaY, deltaZ);
+        return getRequiredPitch(deltaX, deltaY, deltaZ);
     }
+
     public static float getRequiredYawCenter(BlockPos blockLookingAt) {
         double deltaX = blockLookingAt.getX() - mc.thePlayer.posX + 0.5d;
         double deltaZ = blockLookingAt.getZ() - mc.thePlayer.posZ + 0.5d;
-        return  getRequiredYaw(deltaX, deltaZ);
+        return getRequiredYaw(deltaX, deltaZ);
     }
+
     public static float getRequiredPitch(double deltaX, double deltaY, double deltaZ) {
         double deltaDis = MathUtils.getDistanceBetweenTwoPoints(deltaX, deltaZ);
         double pitch = -(Math.atan(deltaY / deltaDis) * 180 / Math.PI);
-        if( (float) pitch > 90 ||  (float) pitch < -90){
+        if ((float) pitch > 90 || (float) pitch < -90) {
             System.out.println(pitch + " " + deltaX + " " + deltaZ);
             return 0;
         }
-        return  (float) pitch;
+        return (float) pitch;
     }
-
-
 
 
     public static float getActualYawFrom360(float yaw360) {
         float currentYaw = yaw360;
-        if(mc.thePlayer.rotationYaw > yaw360){
-            while (mc.thePlayer.rotationYaw - currentYaw < 180 || mc.thePlayer.rotationYaw - currentYaw > 0){
-                if(Math.abs(currentYaw + 360 - mc.thePlayer.rotationYaw) < Math.abs(currentYaw - mc.thePlayer.rotationYaw))
+        if (mc.thePlayer.rotationYaw > yaw360) {
+            while (mc.thePlayer.rotationYaw - currentYaw < 180 || mc.thePlayer.rotationYaw - currentYaw > 0) {
+                if (Math.abs(currentYaw + 360 - mc.thePlayer.rotationYaw) < Math.abs(currentYaw - mc.thePlayer.rotationYaw))
                     currentYaw = currentYaw + 360;
-                else  break;
+                else break;
             }
         }
-        if(mc.thePlayer.rotationYaw < yaw360){
-            while (currentYaw - mc.thePlayer.rotationYaw > 180 || mc.thePlayer.rotationYaw - currentYaw < 0){
-                if(Math.abs(currentYaw - 360 - mc.thePlayer.rotationYaw) < Math.abs(currentYaw - mc.thePlayer.rotationYaw))
+        if (mc.thePlayer.rotationYaw < yaw360) {
+            while (currentYaw - mc.thePlayer.rotationYaw > 180 || mc.thePlayer.rotationYaw - currentYaw < 0) {
+                if (Math.abs(currentYaw - 360 - mc.thePlayer.rotationYaw) < Math.abs(currentYaw - mc.thePlayer.rotationYaw))
                     currentYaw = currentYaw - 360;
-                else  break;
+                else break;
             }
         }
         return currentYaw;
@@ -268,11 +276,11 @@ public class AngleUtils {
 
     }
 
-    public static BlockUtils.BlockSides getOptimalSide(BlockPos blockPos){
+    public static BlockUtils.BlockSides getOptimalSide(BlockPos blockPos) {
 
         ArrayList<BlockUtils.BlockSides> blockSidesNotCovered = BlockUtils.getAdjBlocksNotCovered(blockPos);
         BlockUtils.BlockSides blockSideToMine = BlockUtils.BlockSides.NONE;
-        if(blockSidesNotCovered.size() > 0 && !lookAtCenterBlocks.contains(BlockUtils.getBlock(blockPos))) {
+        if (blockSidesNotCovered.size() > 0 && !lookAtCenterBlocks.contains(BlockUtils.getBlock(blockPos))) {
             double lowestCost = 9999;
             blockSideToMine = blockSidesNotCovered.get(0);
 
@@ -283,27 +291,27 @@ public class AngleUtils {
                 switch (blockSide) {
                     case posX:
                         tempCost = MathUtils.getDistanceBetweenTwoPoints(
-                                mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX() + 0.5d, blockPos.getY(), blockPos.getZ());
+                            mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX() + 0.5d, blockPos.getY(), blockPos.getZ());
                         break;
                     case negX:
                         tempCost = MathUtils.getDistanceBetweenTwoPoints(
-                                mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX() - 0.5d, blockPos.getY(), blockPos.getZ());
+                            mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX() - 0.5d, blockPos.getY(), blockPos.getZ());
                         break;
                     case posZ:
                         tempCost = MathUtils.getDistanceBetweenTwoPoints(
-                                mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY(), blockPos.getZ() + 0.5d);
+                            mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY(), blockPos.getZ() + 0.5d);
                         break;
                     case negZ:
                         tempCost = MathUtils.getDistanceBetweenTwoPoints(
-                                mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY(), blockPos.getZ() - 0.5d);
+                            mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY(), blockPos.getZ() - 0.5d);
                         break;
                     case up:
                         tempCost = MathUtils.getDistanceBetweenTwoPoints(
-                                mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY() + 0.5d, blockPos.getZ());
+                            mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY() + 0.5d, blockPos.getZ());
                         break;
                     case down:
                         tempCost = MathUtils.getDistanceBetweenTwoPoints(
-                                mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY() - 0.5d, blockPos.getZ());
+                            mc.thePlayer.posX, mc.thePlayer.posY + 1.62d, mc.thePlayer.posZ, blockPos.getX(), blockPos.getY() - 0.5d, blockPos.getZ());
                         break;
                 }
                 if (tempCost < lowestCost) {
@@ -315,10 +323,11 @@ public class AngleUtils {
         return blockSideToMine;
     }
 
-    public static int getYawRotationTime(float target_yaw, int angle_per_unit, int time_per_unit, int min){
+    public static int getYawRotationTime(float target_yaw, int angle_per_unit, int time_per_unit, int min) {
         return (int) Math.max(min, getAngleDifference(target_yaw, getActualRotationYaw()) / angle_per_unit * time_per_unit);
     }
-    public static int getPitchRotationTime(float target_pitch, int angle_per_unit, int time_per_unit, int min){
+
+    public static int getPitchRotationTime(float target_pitch, int angle_per_unit, int time_per_unit, int min) {
         return (int) Math.max(min, Math.abs(target_pitch - mc.thePlayer.rotationPitch) / angle_per_unit * time_per_unit);
     }
 
@@ -422,4 +431,41 @@ public class AngleUtils {
         return null;
     }
 
+    // For the angle class
+    public static Angle getAngle(BlockPos blockPos) {
+        return getAngle(new Vec3(blockPos.getX() + .5, blockPos.getY() + .5, blockPos.getZ() + .5));
+    }
+
+    public static Angle getAngle(Entity entity, Float height) {
+        return getAngle(entity.getPositionVector().addVector(0, height, 0));
+    }
+
+    public static Angle getAngle(Vec3 vec) {
+        Tuple<Float, Float> angle = getRotation(vec);
+        return new Angle(angle.getFirst(), angle.getSecond());
+    }
+
+    public static Angle calculateNeededAngleChange(Entity entity, Float height) {
+        Vec3 end = entity.getPositionVector().addVector(0.0, height, 0.0);
+        return calculateNeededAngleChange(end);
+    }
+
+    public static Angle calculateNeededAngleChange(BlockPos blockPos){
+        return calculateNeededAngleChange(BlockUtil.getClosestSidePos(blockPos));
+    }
+
+    public static Angle calculateNeededAngleChange(Vec3 vecPos){
+        Angle end = getAngle(vecPos);
+        return calculateNeededAngleChange(getPlayerAngle(), end);
+    }
+
+    public static Angle calculateNeededAngleChange(Angle startRot, Angle endRot) {
+        float yawChange = MathHelper.wrapAngleTo180_float(endRot.yaw) - MathHelper.wrapAngleTo180_float(startRot.yaw);
+        if (yawChange <= -180.0f) {
+            yawChange += 360.0f;
+        } else if (yawChange > 180.0f) {
+            yawChange += -360.0f;
+        }
+        return new Angle(yawChange, endRot.pitch - startRot.pitch);
+    }
 }

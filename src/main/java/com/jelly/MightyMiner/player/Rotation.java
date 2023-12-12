@@ -88,8 +88,8 @@ public class Rotation {
         if(deltaTime > 0.1)
             return;
 
-        phase += ((rate + Math.random() * rate / 2.0f) * deltaTime);
-        phase %= (2 * Math.PI);
+        phase += (float) ((rate + Math.random() * rate / 2.0f) * deltaTime);
+        phase %= (float) (2 * Math.PI);
 
         float x = (float) (semi_major_axis * Math.sin(phase));
         float y = (float) (semi_minor_axis * Math.cos(phase)) - 0.5f;
@@ -116,8 +116,8 @@ public class Rotation {
         if(deltaTime > 0.1)
             return;
 
-        phase += (rate / 2.0f * deltaTime);
-        phase %= (2 * Math.PI);
+        phase += (float) (rate / 2.0f * deltaTime);
+        phase %= (float) (2 * Math.PI);
 
 
         // here we use parametric equations (We use a Limaçon here (https://en.wikipedia.org/wiki/Lima%C3%A7on))

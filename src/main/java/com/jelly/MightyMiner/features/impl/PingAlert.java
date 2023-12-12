@@ -1,4 +1,4 @@
-package com.jelly.MightyMiner.features;
+package com.jelly.MightyMiner.features.impl;
 
 import com.jelly.MightyMiner.utils.Clock;
 import com.jelly.MightyMiner.utils.LogUtils;

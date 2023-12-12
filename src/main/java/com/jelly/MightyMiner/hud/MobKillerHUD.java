@@ -2,7 +2,7 @@ package com.jelly.MightyMiner.hud;
 
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.hud.TextHud;
-import com.jelly.MightyMiner.features.MobKiller;
+import com.jelly.MightyMiner.features.impl.MobKiller;
 
 import java.util.Arrays;
 import java.util.List;

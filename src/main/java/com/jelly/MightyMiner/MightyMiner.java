@@ -1,13 +1,16 @@
 package com.jelly.MightyMiner;
 
+import cc.polyfrost.oneconfig.utils.commands.CommandManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jelly.MightyMiner.command.AOTVWaypointsCommands;
 import com.jelly.MightyMiner.command.BaritoneDebug;
+import com.jelly.MightyMiner.command.TestCommand;
 import com.jelly.MightyMiner.config.Config;
 import com.jelly.MightyMiner.config.aotv.AOTVWaypoints;
 import com.jelly.MightyMiner.config.aotv.AOTVWaypointsStructs;
-import com.jelly.MightyMiner.features.*;
+import com.jelly.MightyMiner.features.FeatureManager;
+import com.jelly.MightyMiner.features.impl.*;
 import com.jelly.MightyMiner.handlers.KeybindHandler;
 import com.jelly.MightyMiner.handlers.MacroHandler;
 import com.jelly.MightyMiner.utils.HypixelUtils.SkyblockInfo;
@@ -102,6 +105,9 @@ public class MightyMiner {
         ClientCommandHandler.instance.registerCommand(new BaritoneDebug());
 
         Minecraft.getMinecraft().gameSettings.gammaSetting = 100;
+        CommandManager.register(new TestCommand());
+
+        FeatureManager.getInstance().loadFeatures().forEach(MinecraftForge.EVENT_BUS::register);
     }
 
     public static void registerInitNotification() {

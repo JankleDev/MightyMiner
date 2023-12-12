@@ -1,4 +1,4 @@
-package com.jelly.MightyMiner.features;
+package com.jelly.MightyMiner.features.impl;
 
 import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.handlers.MacroHandler;

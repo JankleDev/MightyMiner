@@ -1,4 +1,4 @@
-package com.jelly.MightyMiner.features;
+package com.jelly.MightyMiner.features.impl;
 
 import com.jelly.MightyMiner.macros.macros.CommissionMacro;
 import com.jelly.MightyMiner.utils.HypixelUtils.ComissionUtils;

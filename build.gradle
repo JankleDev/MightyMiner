@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = "1.6.10"
+    ext.kotlin_version = "1.9.0"
     repositories {
         jcenter()
         maven {
@@ -15,7 +15,6 @@ buildscript {
         classpath "com.github.xcfrg:MixinGradle:0.6-SNAPSHOT"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
-
 }
 
 apply plugin: 'kotlin'
@@ -23,9 +22,7 @@ apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "org.spongepowered.mixin"
 
-
 version = 1.0
-
 
 group = "com.jelly.mightyminer"
 archivesBaseName = "MightyMiner"
@@ -83,16 +80,11 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok:1.18.24')
 
     include('org.joml:joml:1.10.5')
-   // implementation('org.joml:joml:1.10.5')
-  //  annotationProcessor('org.joml:joml:1.10.5')
-
-//    include 'eu.okaeri:okaeri-configs-json-gson:4.0.6'
-
 
     include(fileTree(dir: 'libs', include: '*.jar'))
     implementation(fileTree(dir: 'libs', include: '*.jar'))
 
-    compileOnly('cc.polyfrost:oneconfig-1.8.9-forge:0.2.0-alpha+')
+    compileOnly('cc.polyfrost:oneconfig-1.8.9-forge:0.2.1-alpha+')
     include('cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+')
     implementation("me.djtheredstoner:DevAuth-forge-legacy:1.1.0")
 }

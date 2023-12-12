@@ -1,10 +1,9 @@
-package com.jelly.MightyMiner.features;
+package com.jelly.MightyMiner.features.impl;
 
 import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.events.BlockChangeEvent;
 import com.jelly.MightyMiner.events.ReceivePacketEvent;
 import com.jelly.MightyMiner.handlers.KeybindHandler;
-import com.jelly.MightyMiner.handlers.MacroHandler;
 import com.jelly.MightyMiner.macros.Macro;
 import com.jelly.MightyMiner.macros.macros.CommissionMacro;
 import com.jelly.MightyMiner.player.Rotation;

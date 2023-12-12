@@ -2,7 +2,6 @@ package com.jelly.MightyMiner.hud;
 
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.hud.TextHud;
-import com.jelly.MightyMiner.features.MobKiller;
 import com.jelly.MightyMiner.handlers.MacroHandler;
 import com.jelly.MightyMiner.macros.macros.CommissionMacro;
 

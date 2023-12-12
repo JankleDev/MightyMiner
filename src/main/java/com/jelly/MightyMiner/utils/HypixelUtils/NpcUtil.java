@@ -26,6 +26,7 @@ public class NpcUtil {
 
 
     public static boolean isNpc(Entity entity) {
+        if(entity == null) return false;
         if (!(entity instanceof EntityOtherPlayerMP)) {
             return false;
         }

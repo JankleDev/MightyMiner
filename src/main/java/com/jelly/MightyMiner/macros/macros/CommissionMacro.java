@@ -5,10 +5,10 @@ import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.baritone.automine.AutoMineBaritone;
 import com.jelly.MightyMiner.baritone.automine.config.BaritoneConfig;
 import com.jelly.MightyMiner.baritone.automine.config.MiningType;
-import com.jelly.MightyMiner.features.Failsafes;
-import com.jelly.MightyMiner.features.FuelFilling;
-import com.jelly.MightyMiner.features.MobKiller;
-import com.jelly.MightyMiner.features.PingAlert;
+import com.jelly.MightyMiner.features.impl.Failsafes;
+import com.jelly.MightyMiner.features.impl.FuelFilling;
+import com.jelly.MightyMiner.features.impl.MobKiller;
+import com.jelly.MightyMiner.features.impl.PingAlert;
 import com.jelly.MightyMiner.handlers.KeybindHandler;
 import com.jelly.MightyMiner.handlers.MacroHandler;
 import com.jelly.MightyMiner.macros.Macro;
@@ -20,9 +20,6 @@ import com.jelly.MightyMiner.utils.HypixelUtils.*;
 import com.jelly.MightyMiner.utils.PlayerUtils;
 import com.jelly.MightyMiner.utils.Timer;
 import com.jelly.MightyMiner.utils.Utils.MathUtils;
-import net.minecraft.block.BlockColored;
-import net.minecraft.block.BlockPrismarine;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -43,12 +40,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 public class CommissionMacro extends Macro {

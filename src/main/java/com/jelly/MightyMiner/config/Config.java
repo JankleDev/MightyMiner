@@ -171,6 +171,15 @@ public class Config extends cc.polyfrost.oneconfig.config.Config {
 
     @Property(type = PropertyType.SLIDER, name = "Safewalk index", description = "Stops walking when there is a large rotation. TURN THIS UP IF you are using high speed", category = "Commission macro", subcategory = "Miscellaneous", max = 10)
     public int comBarSafeIndex = 5;*/
+
+    @VigilanceName(name = "Use Royal Pigeon", category = COMMISSION_MACRO, subcategory = "Mining")
+    @Switch( name = "Use Royal Pipgeon", category = COMMISSION_MACRO, subcategory = "Mining")
+    public boolean commUsePigeon = false;
+
+    @VigilanceName(name = "Mining Tool", category = COMMISSION_MACRO, subcategory = "Mining")
+    @Dropdown(name = "Mining Tool", category = COMMISSION_MACRO, subcategory = "Mining", options = {"Pickonimbus", "Gemstone Gauntlet", "Titanium Drill"})
+    public int commMiningTool = 0;
+
     @VigilanceName(name = "Rotation time in ms", category = COMMISSION_MACRO, subcategory = "Mining")
     @Slider(name = "Rotation time in ms", description = "Time the macro takes for each rotation", category = COMMISSION_MACRO, subcategory = "Mining", max = 1200, min = 50)
     public int commRotationTime = 800;

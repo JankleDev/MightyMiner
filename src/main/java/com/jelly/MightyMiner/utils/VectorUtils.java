@@ -756,4 +756,8 @@ public class VectorUtils {
     private static boolean rayTraceable(final Vec3 vec31, final Vec3 vec32) {
         return rayTraceable(vec31, vec32, new BlockPos(vec32));
     }
+
+    public static boolean equals(final Vec3 vec31, final Vec3 vec32){
+        return vec31.xCoord == vec32.xCoord && vec31.yCoord == vec32.yCoord && vec31.zCoord == vec32.zCoord;
+    }
 }

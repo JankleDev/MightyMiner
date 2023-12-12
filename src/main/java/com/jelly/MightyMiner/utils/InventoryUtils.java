@@ -34,15 +34,16 @@ public class InventoryUtils {
             final Matcher matcher = pattern.matcher(tag.toString());
             while (matcher.find()) {
                 if (matcher.group(0) != null) {
-                    speed = parseInt((matcher.group(0).replaceAll("Current Speed Cap: §a" ,"")));
+                    speed = parseInt((matcher.group(0).replaceAll("Current Speed Cap: §a", "")));
                 }
             }
         }
         return speed;
     }
+
     public static String getInventoryName() {
         if (InventoryUtils.mc.currentScreen instanceof GuiChest) {
-            final ContainerChest chest = (ContainerChest)InventoryUtils.mc.thePlayer.openContainer;
+            final ContainerChest chest = (ContainerChest) InventoryUtils.mc.thePlayer.openContainer;
             final IInventory inv = chest.getLowerChestInventory();
             return inv.hasCustomName() ? inv.getName() : null;
         }
@@ -60,6 +61,7 @@ public class InventoryUtils {
     public static void openInventory() {
         mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
     }
+
     public static ItemStack getStackInSlot(final int slot) {
         return InventoryUtils.mc.thePlayer.inventory.getStackInSlot(slot);
     }
@@ -120,7 +122,7 @@ public class InventoryUtils {
     public static boolean isPresentInInventory(List<String> names) {
         for (int i = 9; i < 44; ++i) {
             final ItemStack is = mc.thePlayer.inventoryContainer.inventorySlots.get(i).getStack();
-            for(String s : names){
+            for (String s : names) {
                 if (is != null && is.getDisplayName().contains(s)) {
                     return true;
                 }
@@ -212,5 +214,23 @@ public class InventoryUtils {
         return copy;
     }
 
+    // OsamaMagic
+
+    public static int getHotbarSlotForItem(String itemName) {
+        for (int i = 0; i < 8; i++) {
+            ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i);
+            if (stack == null) return -1;
+            if (stack.getDisplayName().toLowerCase().contains(itemName.toLowerCase())) return i;
+        }
+        return -1;
+    }
+
+    public static boolean setHotbarSlotForItem(String itemName){
+        int slot = getHotbarSlotForItem(itemName);
+        if (slot == -1) return false;
+
+        mc.thePlayer.inventory.currentItem = slot;
+        return true;
+    }
 
 }

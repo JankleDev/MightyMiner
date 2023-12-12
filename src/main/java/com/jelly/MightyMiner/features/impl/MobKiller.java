@@ -1,7 +1,5 @@
-package com.jelly.MightyMiner.features;
+package com.jelly.MightyMiner.features.impl;
 
-import cc.polyfrost.oneconfig.libs.checker.units.qual.C;
-import cc.polyfrost.oneconfig.libs.checker.units.qual.K;
 import com.jelly.MightyMiner.MightyMiner;
 import com.jelly.MightyMiner.handlers.KeybindHandler;
 import com.jelly.MightyMiner.player.Rotation;
@@ -18,14 +16,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-
-import static com.jelly.MightyMiner.handlers.KeybindHandler.leftClick;
-import static com.jelly.MightyMiner.handlers.KeybindHandler.rightClick;
 
 
 public class MobKiller {
