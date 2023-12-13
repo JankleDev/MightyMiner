@@ -14,8 +14,8 @@ import net.minecraft.util.BlockPos;
 public class TestCommand {
     @Main
     public void main() {
-        BlockPos blockPos = new BlockPos(242, 73, 161);
-        AutoRotation.getInstance().easeTo(new Target(blockPos), 500, LockType.SMOOTH, 200);
+        BlockPos blockPos = new BlockPos(242, 84, 161);
+        AutoRotation.getInstance().easeTo(new Target(blockPos), AutoRotation.DYNAMIC_TIME);
     }
 
     @SubCommand(aliases = {"stop", "sf"})

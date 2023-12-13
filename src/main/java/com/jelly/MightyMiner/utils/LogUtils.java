@@ -17,7 +17,7 @@ public class LogUtils {
 
     public static void debugLog(String log) {
         if (!MightyMiner.config.debugLogMode) return;
-        mc.thePlayer.addChatMessage(new ChatComponentText("§a[log]» " + log));
+        mc.thePlayer.addChatMessage(new ChatComponentText("§a[log]» §7" + log));
     }
 
     public static void logError(String message) {

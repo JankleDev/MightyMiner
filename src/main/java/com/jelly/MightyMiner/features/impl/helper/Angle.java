@@ -8,4 +8,13 @@ public class Angle {
         this.yaw = yaw;
         this.pitch = pitch;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return false;
+        if(!(obj instanceof Angle)) return false;
+
+        Angle ang = (Angle) obj;
+        return this.yaw == ang.yaw && this.pitch == ang.pitch;
+    }
 }

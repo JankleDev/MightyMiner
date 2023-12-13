@@ -1,6 +1,7 @@
 package com.jelly.MightyMiner.features.impl.general;
 
 // Old rot class isnt bad im having trouble using it
+
 import com.jelly.MightyMiner.features.AbstractFeature;
 import com.jelly.MightyMiner.features.impl.helper.Angle;
 import com.jelly.MightyMiner.features.impl.helper.Ease;
@@ -16,19 +17,25 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.function.Function;
 
 public class AutoRotation extends AbstractFeature {
+    public static final int DYNAMIC_TIME = 0;
+    private static final int DEFAULT_DYNAMIC_TIME = 500;
     private static AutoRotation instance = null;
+
     public static AutoRotation getInstance() {
         if (instance == null) {
             instance = new AutoRotation();
         }
         return instance;
     }
+
     private static final Minecraft mc = Minecraft.getMinecraft();
 
     private Function<Float, Float> easeFunction;
 
     private Target target;
     private Angle startAngle;
+
+    private Angle lastAngle = null;
 
     private long endTime = 0L;
     private long startTime = 0L;
@@ -37,9 +44,7 @@ public class AutoRotation extends AbstractFeature {
     private int smoothLockTime = 0;
 
     public void easeTo(Target target, int time) {
-        note("Started easing");
         easeTo(target, time, LockType.NONE, 200, Ease.getRandomEaseFunction());
-        note("Enable: " + this.canEnable());
     }
 
     public void easeTo(Target target, int time, LockType lockType, int smoothLockTime) {
@@ -56,17 +61,38 @@ public class AutoRotation extends AbstractFeature {
         this.startAngle = AngleUtils.getPlayerAngle();
         this.target = target;
 
+        this.lastAngle = AngleUtils.getPlayerAngle();
+
         this.startTime = System.currentTimeMillis();
         this.endTime = this.startTime + time;
+        if (time == DYNAMIC_TIME) {
+            this.endTime += calculateDynamicTimeFromAngleChange();
+        }
+    }
+
+    private int calculateDynamicTimeFromAngleChange() {
+        Angle angChange = AngleUtils.calculateNeededAngleChange(this.lastAngle, this.target.getAngle());
+        int extraTime = getTime(Math.abs(angChange.yaw) + Math.abs(angChange.pitch));
+        this.lastAngle = this.target.getAngle();
+        return extraTime;
+    }
+
+    // Farmhelper Moment - Edit: Not really i ended up changing everything
+    private int getTime(float change) {
+        // Has to finish rotation under 3000ms - Change if you want
+        // 150 because yes it looks ok - some sort of curve here would make it look better prob
+        float progressLeftTime = Math.max(0, 1 - (int) (this.endTime - this.startTime) / (float) (6 * DEFAULT_DYNAMIC_TIME));
+        return (int) (DEFAULT_DYNAMIC_TIME * (Math.min(1f, change / 150)) * progressLeftTime);
     }
 
     private void changeAngle(float yawChange, float pitchChange) {
-        float newYawChange = yawChange / 0.15f;
-        float newPitchChange = pitchChange / 0.15f;
+        float newYawChange = clampDecimalsTo(yawChange / 0.15f, 2);
+        float newPitchChange = clampDecimalsTo(pitchChange / 0.15f, 2);
         mc.thePlayer.setAngles(newYawChange, newPitchChange);
     }
 
     private void interpolate(Angle startAngle, Angle endAngle) {
+        this.endTime += this.calculateDynamicTimeFromAngleChange();
         float timeProgress = (float) (System.currentTimeMillis() - this.startTime) / (this.endTime - this.startTime);
         float totalNeededAngleProgress = this.easeFunction.apply(timeProgress);
         Angle totalChange = AngleUtils.calculateNeededAngleChange(this.startAngle, endAngle);
@@ -76,10 +102,7 @@ public class AutoRotation extends AbstractFeature {
         float yawProgressThisFrame = totalChange.yaw * (totalNeededAngleProgress - currentYawProgress);
         float pitchProgressThisFrame = totalChange.pitch * (totalNeededAngleProgress - currentPitchProgress);
 
-        this.changeAngle(
-            reduceTrailingPointsTo(yawProgressThisFrame, 2),
-            -reduceTrailingPointsTo(pitchProgressThisFrame, 2)
-        );
+        this.changeAngle(yawProgressThisFrame, -pitchProgressThisFrame);
     }
 
     @Override
@@ -94,18 +117,25 @@ public class AutoRotation extends AbstractFeature {
 
     @Override
     public void disable() {
-        enabled = false;
-        forceEnable = false;
-        easeFunction = null;
+        this.enabled = false;
+        this.forceEnable = false;
+        this.easeFunction = null;
 
-        startAngle = null;
-        target = null;
+        // Crashed my game twice before figuring out i was setting it to null ffs
+        Angle angleChange = AngleUtils.calculateNeededAngleChange(AngleUtils.getPlayerAngle(), this.target.getAngle());
+        this.setSuccessStatus(Math.abs(angleChange.yaw) < .1 && Math.abs(angleChange.pitch) < .1);
 
-        endTime = 0L;
-        startTime = 0L;
+        this.startAngle = null;
+        this.target = null;
 
-        lockType = LockType.NONE;
-        smoothLockTime = 0;
+        this.lastAngle = null;
+
+        this.endTime = 0L;
+        this.startTime = 0L;
+
+        this.lockType = LockType.NONE;
+        this.smoothLockTime = 0;
+
     }
 
     @Override
@@ -145,7 +175,7 @@ public class AutoRotation extends AbstractFeature {
     public void onChatMessageReceive(ClientChatReceivedEvent event) {
     }
 
-    private float reduceTrailingPointsTo(float value, int number) {
+    private float clampDecimalsTo(float value, int number) {
         float multiplier = (float) Math.pow(10, number);
         return Math.round(value * multiplier) / multiplier;
     }
