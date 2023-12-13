@@ -17,8 +17,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.function.Function;
 
 public class AutoRotation extends AbstractFeature {
-    public static final int DYNAMIC_TIME = 0;
-    private static final int DEFAULT_DYNAMIC_TIME = 500;
+//    public static final int DYNAMIC_TIME = 0;
+//    private static final int DEFAULT_DYNAMIC_TIME = 1000;
     private static AutoRotation instance = null;
 
     public static AutoRotation getInstance() {
@@ -65,25 +65,31 @@ public class AutoRotation extends AbstractFeature {
 
         this.startTime = System.currentTimeMillis();
         this.endTime = this.startTime + time;
-        if (time == DYNAMIC_TIME) {
-            this.endTime += calculateDynamicTimeFromAngleChange();
-        }
+//        if (time == DYNAMIC_TIME) {
+//            this.endTime += calculateDynamicTimeFromAngleChange();
+//        }
     }
-
-    private int calculateDynamicTimeFromAngleChange() {
-        Angle angChange = AngleUtils.calculateNeededAngleChange(this.lastAngle, this.target.getAngle());
-        int extraTime = getTime(Math.abs(angChange.yaw) + Math.abs(angChange.pitch));
-        this.lastAngle = this.target.getAngle();
-        return extraTime;
-    }
-
-    // Farmhelper Moment - Edit: Not really i ended up changing everything
-    private int getTime(float change) {
-        // Has to finish rotation under 3000ms - Change if you want
-        // 150 because yes it looks ok - some sort of curve here would make it look better prob
-        float progressLeftTime = Math.max(0, 1 - (int) (this.endTime - this.startTime) / (float) (6 * DEFAULT_DYNAMIC_TIME));
-        return (int) (DEFAULT_DYNAMIC_TIME * (Math.min(1f, change / 150)) * progressLeftTime);
-    }
+//  NEED TO DO MORE TESTING - NOT THE MOST IMPORTANT RIGHT NOW
+//    private int calculateDynamicTimeFromAngleChange() {
+//        Angle angChange = AngleUtils.calculateNeededAngleChange(this.lastAngle, this.target.getAngle());
+//        int extraTime = getTime(Math.abs(angChange.yaw) + Math.abs(angChange.pitch));
+//        this.lastAngle = this.target.getAngle();
+//        if(Math.abs(angChange.yaw) + Math.abs(angChange.pitch) != 0){
+//            log("anglechange : " + Math.abs(angChange.yaw) + Math.abs(angChange.pitch));
+//        }
+//        if(extraTime != 0){
+//            log("extratime: " + extraTime);
+//        }
+//        return extraTime;
+//    }
+//
+//    // Farmhelper Moment - Edit: Not really i ended up changing everything
+//    private int getTime(float change) {
+//        // Has to finish rotation under 3000ms - Change if you want
+//        // 150 because yes it looks ok - some sort of curve here would make it look better prob
+//        float progressLeftTime = Math.max(0, 1 - (int) (this.endTime - this.startTime) / (float) (6 * DEFAULT_DYNAMIC_TIME));
+//        return (int) (DEFAULT_DYNAMIC_TIME * (Math.min(1f, change / 150)) * progressLeftTime);
+//    }
 
     private void changeAngle(float yawChange, float pitchChange) {
         float newYawChange = clampDecimalsTo(yawChange / 0.15f, 2);
@@ -92,10 +98,10 @@ public class AutoRotation extends AbstractFeature {
     }
 
     private void interpolate(Angle startAngle, Angle endAngle) {
-        this.endTime += this.calculateDynamicTimeFromAngleChange();
+//        this.endTime += this.calculateDynamicTimeFromAngleChange();
         float timeProgress = (float) (System.currentTimeMillis() - this.startTime) / (this.endTime - this.startTime);
         float totalNeededAngleProgress = this.easeFunction.apply(timeProgress);
-        Angle totalChange = AngleUtils.calculateNeededAngleChange(this.startAngle, endAngle);
+        Angle totalChange = AngleUtils.calculateNeededAngleChange(startAngle, endAngle);
 
         float currentYawProgress = (mc.thePlayer.rotationYaw - startAngle.yaw) / totalChange.yaw;
         float currentPitchProgress = (mc.thePlayer.rotationPitch - startAngle.pitch) / totalChange.pitch;
@@ -154,6 +160,7 @@ public class AutoRotation extends AbstractFeature {
         if (!this.canEnable()) return;
 
         if (this.endTime >= System.currentTimeMillis()) {
+            log("Target: " + this.target);
             this.interpolate(this.startAngle, this.target.getAngle());
             return;
         }

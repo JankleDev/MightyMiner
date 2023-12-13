@@ -17,4 +17,9 @@ public class Angle {
         Angle ang = (Angle) obj;
         return this.yaw == ang.yaw && this.pitch == ang.pitch;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Angle(yaw = %f, pitch = %f)", this.yaw, this.pitch);
+    }
 }

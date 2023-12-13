@@ -15,7 +15,7 @@ public class TestCommand {
     @Main
     public void main() {
         BlockPos blockPos = new BlockPos(242, 84, 161);
-        AutoRotation.getInstance().easeTo(new Target(blockPos), AutoRotation.DYNAMIC_TIME);
+        AutoRotation.getInstance().easeTo(new Target(blockPos), 500);
     }
 
     @SubCommand(aliases = {"stop", "sf"})
