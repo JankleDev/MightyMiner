@@ -7,12 +7,13 @@
     "client.ChunkMixin",
     "client.MixinGlassPane",
     "client.MixinModList",
-    "network.MixinNetworkManager",
-    "client.PlayerControllerMixin"
+    "client.PlayerControllerMixin",
+    "network.MixinNetworkManager"
   ],
   "client": [
+    "accessors.MinecraftInvoker",
+    "accessors.RenderGlobalAccessor",
     "client.MixinChunkProviderClient",
-    "network.MixinNetHandlerPlayClient",
-    "accessors.RenderGlobalAccessor"
+    "network.MixinNetHandlerPlayClient"
   ]
 }

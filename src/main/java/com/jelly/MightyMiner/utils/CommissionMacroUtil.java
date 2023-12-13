@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.Vec3;
 
 import java.util.Comparator;
@@ -38,13 +39,10 @@ public class CommissionMacroUtil {
             .filter(entity -> entity.getName() != null && entity.getName().contains("Ceanna"))
             .findFirst().orElse(null);
         if (ceannaNameStand != null) {
-            LogUtils.addNote("Pos: " + ceannaNameStand.getPositionVector());
-            LogUtils.addNote("");
             for (Entity entity : mc.theWorld.loadedEntityList) {
                 if (!(entity instanceof EntityOtherPlayerMP)) continue;
                 // It will probably never go worng the chances are too low... i cant even count that far help
                 // hotsawp is balls bro
-                LogUtils.addNote("ThisEntityPoss: " + entity.getPositionVector() + " Equals CeannaPos: " + VectorUtils.equals(ceannaNameStand.getPositionVector(), entity.getPositionVector()));
                 if (VectorUtils.equals(ceannaNameStand.getPositionVector(), entity.getPositionVector()) && NpcUtil.isNpc(entity))
                     return entity;
             }
@@ -64,5 +62,13 @@ public class CommissionMacroUtil {
         //            -> or some weird mentally ill star sentry was standing in the EXACT SPOT
         if (NpcUtil.isNpc(maybeCeanna)) return maybeCeanna;
         return null;
+    }
+
+    public static int getCompletedCommissionSlot(){
+        for(Slot slot: mc.thePlayer.openContainer.inventorySlots){
+            if(!slot.getHasStack()) continue;
+            if(InventoryUtils.getLoreFromSlotNumber(slot.slotNumber).contains("completed")) return slot.slotNumber;
+        }
+        return -1;
     }
 }

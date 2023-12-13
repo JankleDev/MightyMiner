@@ -5,6 +5,7 @@ import com.jelly.MightyMiner.baritone.automine.AutoMineBaritone;
 import com.jelly.MightyMiner.baritone.automine.config.WalkBaritoneConfig;
 import com.jelly.MightyMiner.features.impl.MobKiller;
 import com.jelly.MightyMiner.macros.Macro;
+import com.jelly.MightyMiner.mixins.accessors.MinecraftInvoker;
 import com.jelly.MightyMiner.render.BlockRenderer;
 import com.jelly.MightyMiner.utils.Utils.ReflectionUtils;
 import net.minecraft.client.Minecraft;
@@ -21,6 +22,7 @@ import java.lang.reflect.Field;
 
 public class KeybindHandler {
     static Minecraft mc = Minecraft.getMinecraft();
+    static MinecraftInvoker invokedMc = (MinecraftInvoker) mc;
 
     public static KeyBinding keybindA = mc.gameSettings.keyBindLeft;
     public static KeyBinding keybindD =  mc.gameSettings.keyBindRight;
@@ -44,24 +46,16 @@ public class KeybindHandler {
     }
 
     public static void rightClick() {
-        if (!ReflectionUtils.invoke(mc, "func_147121_ag")) {
-            ReflectionUtils.invoke(mc, "rightClickMouse");
-        }
+        invokedMc.invokeRightClickMouse();
     }
 
     public static void leftClick() {
-        if (!ReflectionUtils.invoke(mc, "func_147116_af")) {
-            ReflectionUtils.invoke(mc, "clickMouse");
-        }
+        invokedMc.invokeLeftClickMouse();
     }
 
     public static void middleClick() {
-        if (!ReflectionUtils.invoke(mc, "func_147112_ai")) {
-            ReflectionUtils.invoke(mc, "middleClickMouse");
-        }
+        invokedMc.invokeMiddleClickMouse();
     }
-
-
 
     static KeyBinding[] macroKeybinds = new KeyBinding[3];
 

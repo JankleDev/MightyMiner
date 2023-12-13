@@ -123,14 +123,16 @@ public class AutoRotation extends AbstractFeature {
 
     @Override
     public void disable() {
+        if(!this.canEnable()) return;
+
         this.enabled = false;
         this.forceEnable = false;
         this.easeFunction = null;
 
-        // Crashed my game twice before figuring out i was setting it to null ffs
         Angle angleChange = AngleUtils.calculateNeededAngleChange(AngleUtils.getPlayerAngle(), this.target.getAngle());
-        this.setSuccessStatus(Math.abs(angleChange.yaw) < .1 && Math.abs(angleChange.pitch) < .1);
+        this.setSuccessStatus(Math.abs(angleChange.yaw) < 1 && Math.abs(angleChange.pitch) < 1);
 
+        // Crashed my game twice before figuring out i was setting it to null ffs
         this.startAngle = null;
         this.target = null;
 
@@ -160,7 +162,6 @@ public class AutoRotation extends AbstractFeature {
         if (!this.canEnable()) return;
 
         if (this.endTime >= System.currentTimeMillis()) {
-            log("Target: " + this.target);
             this.interpolate(this.startAngle, this.target.getAngle());
             return;
         }

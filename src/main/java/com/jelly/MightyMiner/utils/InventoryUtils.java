@@ -3,6 +3,7 @@ package com.jelly.MightyMiner.utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -45,9 +46,9 @@ public class InventoryUtils {
         if (InventoryUtils.mc.currentScreen instanceof GuiChest) {
             final ContainerChest chest = (ContainerChest) InventoryUtils.mc.thePlayer.openContainer;
             final IInventory inv = chest.getLowerChestInventory();
-            return inv.hasCustomName() ? inv.getName() : null;
+            return inv.hasCustomName() ? inv.getName() : "";
         }
-        return null;
+        return "";
     }
 
     public static boolean inventoryNameStartsWith(String startsWithString) {
@@ -191,6 +192,8 @@ public class InventoryUtils {
         return item.getSubCompound("ExtraAttributes", false);
     }
 
+
+
     public static NBTTagList getLore(ItemStack item) {
         if (item == null) {
             throw new NullPointerException("The item cannot be null!");
@@ -225,7 +228,7 @@ public class InventoryUtils {
         return -1;
     }
 
-    public static boolean setHotbarSlotForItem(String itemName){
+    public static boolean setHotbarSlotForItem(String itemName) {
         int slot = getHotbarSlotForItem(itemName);
         if (slot == -1) return false;
 
@@ -233,4 +236,24 @@ public class InventoryUtils {
         return true;
     }
 
+
+    public static String getLoreFromSlotNumber(int slotNumber) { // Open Inv Slot BTW
+        Slot slot = mc.thePlayer.openContainer.getSlot(slotNumber);
+        if (!slot.getHasStack()) return "";
+        ItemStack stack = slot.getStack();
+//        NBTTagList tagList = stack.getTagCompound().getCompoundTag("display").getTagList("Lore", 8);
+        NBTTagList tagList = getLore(stack);
+
+        if (tagList == null) return "";
+
+        StringBuilder lore = new StringBuilder();
+        for (int i = 0; i < tagList.tagCount(); i++) {
+            lore.append(StringUtils.stripControlCodes(tagList.getStringTagAt(i)).toLowerCase().trim()).append(" ");
+        }
+        return lore.toString();
+    }
+
+    public static void closeOpenGui(){
+        if(mc.currentScreen != null) mc.thePlayer.closeScreen();
+    }
 }
