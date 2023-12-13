@@ -11,6 +11,7 @@ import net.minecraft.util.Vec3;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class RaytracingUtils {
     private static final Minecraft mc = Minecraft.getMinecraft();
@@ -50,7 +51,7 @@ public class RaytracingUtils {
     }
 
     public static boolean canSeePoint(Vec3 position) {
-        Vec3 startVec = playerHeadPos();
+        Vec3 startVec = mc.thePlayer.getPositionEyes(1f);
         MovingObjectPosition result = raytrace(startVec, position);
         if (result == null || result.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
             return false;
@@ -69,7 +70,7 @@ public class RaytracingUtils {
     // Credits GumTuneClient
     public static MovingObjectPosition raytrace(Vec3 v1, Vec3 v2) {
         Vec3 v3 = v2.subtract(v1);
-        List<Entity> entities = mc.theWorld.getEntitiesInAABBexcluding(null,
+        List<Entity> entities = mc.theWorld.getEntitiesInAABBexcluding(mc.thePlayer,
             mc.thePlayer.getEntityBoundingBox().addCoord(v3.xCoord, v3.yCoord, v3.zCoord).expand(1.0, 1.0, 1.0),
             entity -> entity.isEntityAlive() && entity.canBeCollidedWith()
         );

@@ -192,4 +192,8 @@ public class KeybindHandler {
         }
 
     }
+
+    public static void holdLeftClick(boolean hold){
+        realSetKeyBindState(keybindAttack, hold);
+    }
 }

@@ -6,6 +6,7 @@ import net.minecraft.util.ChatComponentText;
 
 public class LogUtils {
     static Minecraft mc = Minecraft.getMinecraft();
+    private static String lastMessage = "";
 
     public static void addMessage(String message) {
         send("b§l" + message);
@@ -17,6 +18,8 @@ public class LogUtils {
 
     public static void debugLog(String log) {
         if (!MightyMiner.config.debugLogMode) return;
+        if(log.equalsIgnoreCase(lastMessage)) return;
+        lastMessage = log;
         mc.thePlayer.addChatMessage(new ChatComponentText("§a[log]» §7" + log));
     }
 

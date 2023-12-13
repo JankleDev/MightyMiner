@@ -26,8 +26,6 @@ public class AutoCommissionClaim extends AbstractFeature {
         }
         return instance;
     }
-    private final Clock timer = new Clock(); // General Timer For Everything
-    private final Minecraft mc = Minecraft.getMinecraft(); // Need to see if using one instance is better or not.
     private State currentState = State.STARTING;
     private Entity ceanna = null;
     private final Vec3 ceannaPosition = new Vec3(42.50, 134.50, 22.50);
@@ -38,7 +36,7 @@ public class AutoCommissionClaim extends AbstractFeature {
         LOOKING,        // Rotating at Ceanna
         LOOKING_VERIFY, // Verifying Successful Rotation
         OPENING_GUI,    // Opening Commission Claiming GUI Thing
-        GUI_VERIFY,     // Verifying that player actually opened it
+        GUI_VERIFY,     // Verifying that mc.thePlayer actually opened it
         CLAIMING_COMM,  // Claiming the Commission
         FINISHING       // I Dont know english
     }
@@ -177,7 +175,7 @@ public class AutoCommissionClaim extends AbstractFeature {
 
                 if ((mc.currentScreen instanceof GuiChest
                     || mc.thePlayer.openContainer instanceof ContainerChest)
-                    && InventoryUtils.getInventoryName().contains("Commission")) {
+                    && InventoryUtils.getInventoryName().contains("Commissions")) {
                     this.currentState = State.CLAIMING_COMM;
                     this.timer.schedule(500); // Click Delay
                 }

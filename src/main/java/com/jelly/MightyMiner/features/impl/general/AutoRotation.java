@@ -28,8 +28,6 @@ public class AutoRotation extends AbstractFeature {
         return instance;
     }
 
-    private static final Minecraft mc = Minecraft.getMinecraft();
-
     private Function<Float, Float> easeFunction;
 
     private Target target;
@@ -159,7 +157,7 @@ public class AutoRotation extends AbstractFeature {
     @Override
     @SubscribeEvent
     public void onLastRender(RenderWorldLastEvent event) {
-        if (!this.canEnable()) return;
+        if (mc.thePlayer == null || mc.theWorld == null || mc.currentScreen != null || !this.canEnable()) return;
 
         if (this.endTime >= System.currentTimeMillis()) {
             this.interpolate(this.startAngle, this.target.getAngle());

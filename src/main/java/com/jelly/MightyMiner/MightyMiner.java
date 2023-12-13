@@ -84,6 +84,7 @@ public class MightyMiner {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         config = new Config();
+        TestCommand command = new TestCommand();
 
         if(System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH).contains("mac") || System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH).contains("darwin"))
             registerInitNotification();
@@ -99,13 +100,15 @@ public class MightyMiner {
         MinecraftForge.EVENT_BUS.register(new AOTVWaypointsCommands());
         MinecraftForge.EVENT_BUS.register(new PlayerESP());
         MinecraftForge.EVENT_BUS.register(new PingAlert());
+        MinecraftForge.EVENT_BUS.register(command);
+
         KeybindHandler.initializeCustomKeybindings();
         MacroHandler.initializeMacro();
 
         ClientCommandHandler.instance.registerCommand(new BaritoneDebug());
 
         Minecraft.getMinecraft().gameSettings.gammaSetting = 100;
-        CommandManager.register(new TestCommand());
+        CommandManager.register(command);
 
         FeatureManager.getInstance().loadFeatures().forEach(MinecraftForge.EVENT_BUS::register);
     }

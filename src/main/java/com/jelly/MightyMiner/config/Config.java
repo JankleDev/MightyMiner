@@ -44,6 +44,10 @@ public class Config extends cc.polyfrost.oneconfig.config.Config {
     @Switch(name = "Fast mine", category = CORE, subcategory = "Mining")
     public boolean fastMine = false;
 
+    @VigilanceName(name = "Fast mine Offset", category = "Core", subcategory = "Mining")
+    @Slider(name = "Fast mine Offset", category = CORE, subcategory = "Mining", min = 1f, max = 10f)
+    public int fastMineOffset = 3;
+
     @VigilanceName(name = "Blue cheese omelette pickaxe switch", category = "Core", subcategory = "Mining")
     @Switch(name = "Blue cheese omelette pickaxe switch", description = "Automatically switches to the pickaxe with blue cheese omelette when using mining speed boost", category = CORE, subcategory = "Mining")
     public boolean blueCheeseOmeletteToggle = false;

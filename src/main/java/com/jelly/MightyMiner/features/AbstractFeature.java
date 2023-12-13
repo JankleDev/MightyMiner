@@ -1,12 +1,15 @@
 package com.jelly.MightyMiner.features;
 
+import com.jelly.MightyMiner.utils.Clock;
 import com.jelly.MightyMiner.utils.LogUtils;
+import com.jelly.MightyMiner.utils.helper.Helper;
 
-public abstract class AbstractFeature implements IFeature{
-    public boolean enabled = false;
-    public boolean forceEnable = false;
-    public boolean failed = false;
-    public boolean succeeded = false;
+public abstract class AbstractFeature implements IFeature, Helper {
+    protected boolean enabled = false;
+    protected boolean forceEnable = false;
+    protected boolean failed = false;
+    protected boolean succeeded = false;
+    protected Clock timer = new Clock(); // General Timer for Everything
     @Override
     public void setSuccessStatus(final boolean succeeded) {
         this.succeeded = succeeded;
