@@ -196,4 +196,8 @@ public class KeybindHandler {
     public static void holdLeftClick(boolean hold){
         realSetKeyBindState(keybindAttack, hold);
     }
+
+    public static void holdShift(boolean hold){
+        realSetKeyBindState(mc.gameSettings.keyBindSneak, hold);
+    }
 }

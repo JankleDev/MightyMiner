@@ -3,11 +3,9 @@ package com.jelly.MightyMiner.utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -255,5 +253,13 @@ public class InventoryUtils {
 
     public static void closeOpenGui(){
         if(mc.currentScreen != null) mc.thePlayer.closeScreen();
+    }
+
+    public static int getOpenContainerSlotNumber(final String itemName){
+        for(Slot slot: mc.thePlayer.openContainer.inventorySlots){
+            if(!slot.getHasStack()) continue;
+            if(slot.getStack().getDisplayName().toLowerCase().contains(itemName.toLowerCase())) return slot.slotNumber;
+        }
+        return -1;
     }
 }

@@ -19,6 +19,9 @@ import java.util.List;
 public class PlayerUtils {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
+    public static BlockPos playerStandingPosition(){
+        return new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ).down();
+    }
 
     public static BlockPos playerBlockPos() {
         return mc.thePlayer.getPosition();

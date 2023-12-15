@@ -1,6 +1,7 @@
 package com.jelly.MightyMiner.utils.helper;
 
 import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
+import com.jelly.MightyMiner.features.impl.general.AutoInventory;
 import com.jelly.MightyMiner.features.impl.general.AutoMithrilMiner;
 import com.jelly.MightyMiner.features.impl.general.AutoRotation;
 import net.minecraft.client.Minecraft;
@@ -15,4 +16,5 @@ public interface Helper {
     AutoCommissionClaim autoCommission = AutoCommissionClaim.getInstance();
     AutoRotation autoRotation = AutoRotation.getInstance();
     AutoMithrilMiner mithrilMiner = AutoMithrilMiner.getInstance();
+    AutoInventory autoInventory = AutoInventory.getInstance();
 }

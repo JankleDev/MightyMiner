@@ -8,7 +8,6 @@ import com.jelly.MightyMiner.features.impl.helper.Ease;
 import com.jelly.MightyMiner.features.impl.helper.LockType;
 import com.jelly.MightyMiner.features.impl.helper.Target;
 import com.jelly.MightyMiner.utils.AngleUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,8 +16,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.function.Function;
 
 public class AutoRotation extends AbstractFeature {
-//    public static final int DYNAMIC_TIME = 0;
-//    private static final int DEFAULT_DYNAMIC_TIME = 1000;
+    public static final int DYNAMIC_TIME = 0;
+    private static final int DEFAULT_DYNAMIC_TIME = 400;
     private static AutoRotation instance = null;
 
     public static AutoRotation getInstance() {
@@ -63,32 +62,45 @@ public class AutoRotation extends AbstractFeature {
 
         this.startTime = System.currentTimeMillis();
         this.endTime = this.startTime + time;
-//        if (time == DYNAMIC_TIME) {
-//            this.endTime += calculateDynamicTimeFromAngleChange();
-//        }
+        if (time == DYNAMIC_TIME) {
+            this.endTime = this.startTime + getTime();
+            note("Time: " + getTime());
+        }
     }
-//  NEED TO DO MORE TESTING - NOT THE MOST IMPORTANT RIGHT NOW
-//    private int calculateDynamicTimeFromAngleChange() {
-//        Angle angChange = AngleUtils.calculateNeededAngleChange(this.lastAngle, this.target.getAngle());
-//        int extraTime = getTime(Math.abs(angChange.yaw) + Math.abs(angChange.pitch));
-//        this.lastAngle = this.target.getAngle();
-//        if(Math.abs(angChange.yaw) + Math.abs(angChange.pitch) != 0){
-//            log("anglechange : " + Math.abs(angChange.yaw) + Math.abs(angChange.pitch));
-//        }
-//        if(extraTime != 0){
-//            log("extratime: " + extraTime);
-//        }
-//        return extraTime;
-//    }
-//
-//    // Farmhelper Moment - Edit: Not really i ended up changing everything
+
+    //  NEED TO DO MORE TESTING - NOT THE MOST IMPORTANT RIGHT NOW
+    // Farmhelper Moment - 2
+    private int getTime() {
+        Angle angChange = AngleUtils.calculateNeededAngleChange(this.lastAngle, this.target.getAngle());
+        float change = Math.abs(angChange.yaw) + Math.abs(angChange.pitch);
+        if (change < 25) {
+            log("Very close rotation, speeding up by 0.65");
+            return (int) (DEFAULT_DYNAMIC_TIME * 0.65);
+        }
+        if (change < 45) {
+            log("Close rotation, speeding up by 0.77");
+            return (int) (DEFAULT_DYNAMIC_TIME * 0.77);
+        }
+        if (change < 80) {
+            log("Not so close, but not that far rotation, speeding up by 0.9");
+            return (int) (DEFAULT_DYNAMIC_TIME * 0.9);
+        }
+        if (change > 100) {
+            log("Far rotation, slowing down by 1.1");
+            return (int) (DEFAULT_DYNAMIC_TIME * 1.1);
+        }
+        log("Normal rotation");
+        return (int) (DEFAULT_DYNAMIC_TIME * 1.0);
+    }
+
+    // Farmhelper Moment - Edit: Not really i ended up changing everything
 //    private int getTime(float change) {
-//        // Has to finish rotation under 3000ms - Change if you want
-//        // 150 because yes it looks ok - some sort of curve here would make it look better prob
+//         Has to finish rotation under 3000ms - Change if you want
+//         150 because yes it looks ok - some sort of curve here would make it look better prob
 //        float progressLeftTime = Math.max(0, 1 - (int) (this.endTime - this.startTime) / (float) (6 * DEFAULT_DYNAMIC_TIME));
 //        return (int) (DEFAULT_DYNAMIC_TIME * (Math.min(1f, change / 150)) * progressLeftTime);
 //    }
-
+//
     private void changeAngle(float yawChange, float pitchChange) {
         float newYawChange = clampDecimalsTo(yawChange / 0.15f, 2);
         float newPitchChange = clampDecimalsTo(pitchChange / 0.15f, 2);
@@ -121,7 +133,7 @@ public class AutoRotation extends AbstractFeature {
 
     @Override
     public void disable() {
-        if(!this.canEnable()) return;
+        if (!this.canEnable()) return;
 
         this.enabled = false;
         this.forceEnable = false;

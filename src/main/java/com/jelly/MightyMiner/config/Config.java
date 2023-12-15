@@ -176,6 +176,15 @@ public class Config extends cc.polyfrost.oneconfig.config.Config {
     @Property(type = PropertyType.SLIDER, name = "Safewalk index", description = "Stops walking when there is a large rotation. TURN THIS UP IF you are using high speed", category = "Commission macro", subcategory = "Miscellaneous", max = 10)
     public int comBarSafeIndex = 5;*/
 
+
+    @VigilanceName(name = "Transport Method", category = COMMISSION_MACRO, subcategory = "Mining")
+    @Dropdown(name = "Transport Method", category = COMMISSION_MACRO, subcategory = "Mining", options = {"Etherwarpless", "Etherwarp"})
+    public int commTransportMethod = 0;
+
+    @VigilanceName(name = "Aspect of the", category = COMMISSION_MACRO, subcategory = "Mining")
+    @Dropdown(name = "Aspect of the", category = COMMISSION_MACRO, subcategory = "Mining", options = {"End", "Void"})
+    public int commTransportItem = 1;
+
     @VigilanceName(name = "Use Royal Pigeon", category = COMMISSION_MACRO, subcategory = "Mining")
     @Switch( name = "Use Royal Pipgeon", category = COMMISSION_MACRO, subcategory = "Mining")
     public boolean commUsePigeon = false;
@@ -185,7 +194,7 @@ public class Config extends cc.polyfrost.oneconfig.config.Config {
     public int commMiningTool = 0;
 
     @VigilanceName(name = "Rotation time in ms", category = COMMISSION_MACRO, subcategory = "Mining")
-    @Slider(name = "Rotation time in ms", description = "Time the macro takes for each rotation", category = COMMISSION_MACRO, subcategory = "Mining", max = 1200, min = 50)
+    @Slider(name = "Rotation time in ms", description = "Time the macro takes for each rotation", category = COMMISSION_MACRO, subcategory = "Mining", max = 1200, min = 0)
     public int commRotationTime = 800;
 
     @VigilanceName(name = "Stuck time threshold in s", category = COMMISSION_MACRO, subcategory = "Mining")
@@ -406,5 +415,6 @@ public class Config extends cc.polyfrost.oneconfig.config.Config {
         this.addDependency("aotvVisionBlocksColor", "drawBlocksBlockingAOTV");
         this.addDependency("playerESPColor", "playerESP");
         this.addDependency("blueCheeseOmeletteToggle", "useMiningSpeedBoost");
+        this.addDependency("commTransportItem", "commTransportMethod", () -> commTransportMethod == 1);
     }
 }

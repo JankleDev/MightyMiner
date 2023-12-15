@@ -6,7 +6,11 @@ import cc.polyfrost.oneconfig.utils.commands.annotations.SubCommand;
 import com.jelly.MightyMiner.features.FeatureManager;
 import com.jelly.MightyMiner.features.IFeature;
 import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
+import com.jelly.MightyMiner.features.impl.general.AutoAotv;
+import com.jelly.MightyMiner.features.impl.general.AutoInventory;
 import com.jelly.MightyMiner.features.impl.general.AutoMithrilMiner;
+import com.jelly.MightyMiner.features.impl.helper.RouteNode;
+import com.jelly.MightyMiner.features.impl.helper.TransportMethod;
 import com.jelly.MightyMiner.utils.BlockUtil;
 import com.jelly.MightyMiner.utils.DrawUtils;
 import com.jelly.MightyMiner.utils.RaytracingUtils;
@@ -18,7 +22,9 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Command(value = "set")
@@ -31,31 +37,17 @@ public class TestCommand {
 
     @Main
     public void main() {
-//        AutoMithrilMiner.getInstance().enable(2753, 200, false, false);
-//        BlockUtil.getMineableMithrilBlocks(false);
-//        Vec3 v1 = new Vec3(-112.5, 168.01, -72.5);
-//        Vec3 v2 = new Vec3(-110, 167.5, -75);
-//        vecs.add(v1);
-//        vecs.add(v2);
-//        lines.add(v1);
-//        lines.add(v2);
-//        vecs.add(Minecraft.getMinecraft().thePlayer.getPositionVector());
-//        MovingObjectPosition m = RaytracingUtils.raytrace(vecs.get(0), vecs.get(1));
-//        if(m.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){
-//            blocks.add(m.getBlockPos());
-//        }
-//        BlockPos b = RaytracingUtils.getBlockLookingAt(5f);
-//        this.targetBlock = b;
-//        blocks.add(b);
-//        List<EnumFacing> sides = RaytracingUtils.validSides(b);
-//        System.out.println(sides);
-//        for(EnumFacing side: sides){
-//            float[] i = BlockUtil.BLOCK_SIDES.get(side);
-//            vecs.add(new Vec3(b.getX()+i[0], b.getY()+i[1], b.getZ()+i[2]));
-//        }
-        AutoMithrilMiner.getInstance().enable(2753,200, false, true);
-//        vecs.add(BlockUtil.bestPointOnBlock(this.targetBlock));
-//        AutoCommissionClaim.getInstance().enable();
+//        AutoMithrilMiner.getInstance().enable(0, 0, false, true);
+        List<RouteNode> LAVA_ETHERWARPLESS_1 = Arrays.asList(
+            new RouteNode(new BlockPos(4, 160, -43), TransportMethod.FLY),
+            new RouteNode(new BlockPos(9, 175, -12), TransportMethod.FLY),
+            new RouteNode(new BlockPos(27, 206, -13), TransportMethod.FLY),
+            new RouteNode(new BlockPos(54, 218, -12), TransportMethod.FLY),
+            new RouteNode(new BlockPos(55, 226, -32), TransportMethod.FLY),
+            new RouteNode(new BlockPos(56, 222, -30), TransportMethod.FLY)
+        );
+//        AutoAotv.getInstance().enable(LAVA_ETHERWARPLESS_1, false);
+        AutoMithrilMiner.getInstance().enable(0, 0, false, false);
     }
 
     @SubCommand(aliases = {"stop", "sf"})
@@ -73,8 +65,9 @@ public class TestCommand {
 
     @SubCommand
     public void s(){
-        targetBlock = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ);
-        blocks.add(targetBlock);
+//        targetBlock = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ);
+//        blocks.add(targetBlock);
+        AutoCommissionClaim.getInstance().enable();
     }
 
     @SubCommand

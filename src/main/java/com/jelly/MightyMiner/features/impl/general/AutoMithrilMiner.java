@@ -5,6 +5,7 @@ import com.jelly.MightyMiner.features.AbstractFeature;
 import com.jelly.MightyMiner.features.impl.helper.Target;
 import com.jelly.MightyMiner.handlers.KeybindHandler;
 import com.jelly.MightyMiner.utils.*;
+import javafx.util.Pair;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -30,7 +31,7 @@ public class AutoMithrilMiner extends AbstractFeature {
     private int miningSpeed = 0;
     private int miningSpeedBoost = 0;
     private boolean speedBoostActive = false;
-    private boolean speedBoostAvailable = false;
+    private boolean speedBoostAvailable = true;
     private BlockPos targetBlock = null;
     private Clock timer = new Clock();
     private State currentState = State.STARTING;
@@ -64,7 +65,7 @@ public class AutoMithrilMiner extends AbstractFeature {
         this.prioritizeTitanium = prioritizeTitanium;
         this.miningSpeed = miningSpeed;
         this.miningSpeedBoost = miningSpeedBoost;
-        this.speedBoostAvailable = false;
+        this.speedBoostAvailable = true;
         this.speedBoostActive = false;
         this.targetBlock = null;
         this.succeeded = false;
@@ -76,16 +77,16 @@ public class AutoMithrilMiner extends AbstractFeature {
 
     @Override
     public void disable() {
-        if (!this.canEnable()) return;
+        if (!this.enabled) return;
 
         KeybindHandler.holdLeftClick(false);
 
-        this.enabled = true;
+        this.enabled = false;
         this.forceEnable = false;
         this.prioritizeTitanium = false;
         this.miningSpeed = 0;
         this.miningSpeedBoost = 0;
-        this.speedBoostAvailable = false;
+        this.speedBoostAvailable = true;
         this.speedBoostActive = false;
         this.targetBlock = null;
         this.currentState = State.STARTING;
@@ -116,8 +117,7 @@ public class AutoMithrilMiner extends AbstractFeature {
                 this.currentState = State.CHECKING;
                 if (this.miningSpeed == 0 || this.miningSpeedBoost == 0) {
                     this.currentState = State.GET_SPEED_AND_BOOST;
-                }
-                if (this.speedBoostAvailable) {
+                } else if (this.speedBoostAvailable) {
                     this.currentState = State.HANDLE_MSB;
                     this.timer.schedule(500); // Delay before right clicking so that it doesnt get messed up
                     KeybindHandler.holdLeftClick(false);
@@ -126,10 +126,24 @@ public class AutoMithrilMiner extends AbstractFeature {
                 log("Starting");
                 break;
             case GET_SPEED_AND_BOOST:
-                // TODO
+                autoInventory.collectSpeedAndBoost(false);
+                this.currentState = State.SPEED_AND_BOOST_VERIFY;
+                this.timer.schedule(5000);
                 break;
             case SPEED_AND_BOOST_VERIFY:
-                // TODO
+                if (this.timer.passed() || autoInventory.hasFailed()) {
+                    log("Could not get mining speed and boost. Disabling");
+
+                    this.setSuccessStatus(false);
+                    this.disable();
+                    return;
+                }
+                if (autoInventory.hasSucceeded()) {
+                    Pair<Integer, Integer> speedBoost = autoInventory.getSpeedAndBoost();
+                    this.miningSpeed = speedBoost.getKey();
+                    this.miningSpeedBoost = speedBoost.getValue();
+                    this.currentState = State.STARTING;
+                }
                 break;
             case HANDLE_MSB:
                 if (!this.timer.passed()) return;
@@ -219,5 +233,23 @@ public class AutoMithrilMiner extends AbstractFeature {
     @SubscribeEvent
     public void onChatMessageReceive(ClientChatReceivedEvent event) {
         if (event.type != 0) return;
+        String msg = event.message.getUnformattedText();
+        if (msg.contains("Mining Speed Boost is now available!")) {
+            this.speedBoostAvailable = true;
+
+            note("Boost Available");
+        }
+        if (msg.contains("You used your Mining Speed Boost Pickaxe Ability!")) {
+            this.speedBoostActive = true;
+            this.speedBoostAvailable = false;
+
+            note("Boost Active");
+        }
+        if (msg.contains("Your Mining Speed Boost has expired!") || (!this.speedBoostActive && msg.contains("This ability is on cooldown for"))) {
+            this.speedBoostActive = false;
+            this.speedBoostAvailable = false;
+
+            note("Boost Ended or not Available!");
+        }
     }
 }

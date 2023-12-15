@@ -27,11 +27,7 @@ public class CommissionMacroUtil {
         }
     }
 
-    // PE: I had a mental breakdown and had a schizo event when writing this function
-    // Do not like when it uses hardcoded values
-    // it DOES NOT Need these many checks but i heard hypixel added reach check which scares me
-    // I overdid this i didnt add these many checks in meth (shameless plug) but something in me is gonna make
-    // Me feel bad if people get banned for this
+    // This is a chaotic function
     public static Entity getCeanna() {
         final Vec3 actualCeannaPos = new Vec3(42.50, 134.50, 22.50);
         Entity ceannaNameStand = mc.theWorld.loadedEntityList.stream()
@@ -48,27 +44,29 @@ public class CommissionMacroUtil {
             }
             return null;
         }
-        // In case nametag didnt spawn/render (Does happen literally the first time i tried armorstand didnt spawn)
-
         Entity maybeCeanna = mc.theWorld.loadedEntityList.stream()
             .filter(entity -> entity instanceof EntityOtherPlayerMP)
             .map(entity -> (EntityOtherPlayerMP) entity)
             .min(Comparator.comparingDouble(entity -> entity.getPositionVector().distanceTo(actualCeannaPos)))
             .orElse(null);
         if (maybeCeanna == null) return null;
-        // Did not use a distance check because hardcoded stuff is balls
-        // Worse case -> Nametag Didnt Spawn/Some acoustic staff decided to change nametag
-        //            -> or some weird thang like some weird mentally ill staff is satnding in the spot
-        //            -> or some weird mentally ill star sentry was standing in the EXACT SPOT
         if (NpcUtil.isNpc(maybeCeanna)) return maybeCeanna;
         return null;
     }
 
-    public static int getCompletedCommissionSlot(){
-        for(Slot slot: mc.thePlayer.openContainer.inventorySlots){
-            if(!slot.getHasStack()) continue;
-            if(InventoryUtils.getLoreFromSlotNumber(slot.slotNumber).contains("completed")) return slot.slotNumber;
+    public static int getCompletedCommissionSlot() {
+        for (Slot slot : mc.thePlayer.openContainer.inventorySlots) {
+            if (!slot.getHasStack()) continue;
+            if (InventoryUtils.getLoreFromSlotNumber(slot.slotNumber).contains("completed")) return slot.slotNumber;
         }
         return -1;
+    }
+
+    public static String getTransportItem() {
+        if (MightyMiner.config.commTransportItem == 0) {
+            return "Aspect of the End";
+        } else {
+            return "Aspect of the void";
+        }
     }
 }

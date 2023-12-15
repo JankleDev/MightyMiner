@@ -14,9 +14,9 @@ public interface IFeature {
     boolean hasSucceeded();
     boolean hasFailed();
 
-    public void onTick(TickEvent.ClientTickEvent event);
-    public void onLastRender(RenderWorldLastEvent event);
-    public void onChatMessageReceive(ClientChatReceivedEvent event);
+    void onTick(TickEvent.ClientTickEvent event);
+    void onLastRender(RenderWorldLastEvent event);
+    void onChatMessageReceive(ClientChatReceivedEvent event);
 //    public void onPacketReceived(Packet<?> packet);
 
     void log(String message);

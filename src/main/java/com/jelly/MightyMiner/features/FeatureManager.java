@@ -1,6 +1,8 @@
 package com.jelly.MightyMiner.features;
 
 import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
+import com.jelly.MightyMiner.features.impl.general.AutoAotv;
+import com.jelly.MightyMiner.features.impl.general.AutoInventory;
 import com.jelly.MightyMiner.features.impl.general.AutoMithrilMiner;
 import com.jelly.MightyMiner.features.impl.general.AutoRotation;
 
@@ -23,7 +25,9 @@ public class FeatureManager {
         this.features = Arrays.asList(
             AutoRotation.getInstance(),
             AutoCommissionClaim.getInstance(),
-            AutoMithrilMiner.getInstance()
+            AutoMithrilMiner.getInstance(),
+            AutoInventory.getInstance(),
+            AutoAotv.getInstance()
         );
         return this.features;
     }

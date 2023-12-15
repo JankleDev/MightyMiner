@@ -25,6 +25,7 @@ public class Clock {
     }
 
     public void reset() {
+        this.endTime = 0;
         scheduled = false;
     }
 }

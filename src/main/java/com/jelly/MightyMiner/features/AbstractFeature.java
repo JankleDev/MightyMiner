@@ -10,6 +10,7 @@ public abstract class AbstractFeature implements IFeature, Helper {
     protected boolean failed = false;
     protected boolean succeeded = false;
     protected Clock timer = new Clock(); // General Timer for Everything
+
     @Override
     public void setSuccessStatus(final boolean succeeded) {
         this.succeeded = succeeded;
