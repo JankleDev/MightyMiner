@@ -5,6 +5,7 @@ import com.google.common.collect.Ordering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.WorldSettings;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,4 +74,20 @@ public class TablistUtils {
         return playerList;
     }
 
+    public static List<String> getTabList() {
+        try {
+            List<NetworkPlayerInfo> players =
+                playerOrdering.sortedCopy(Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap());
+
+            List<String> result = new ArrayList<>();
+
+            for (NetworkPlayerInfo info : players) {
+                String name = Minecraft.getMinecraft().ingameGUI.getTabList().getPlayerName(info);
+                result.add(StringUtils.stripControlCodes(name));
+            }
+            return result;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
 }

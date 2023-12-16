@@ -29,9 +29,9 @@ public class ScoreboardUtils {
 
         Collection<Score> scores = scoreboard.getSortedScores(objective);
         List<Score> list = scores.stream()
-                .filter(input -> input != null && input.getPlayerName() != null && !input.getPlayerName()
-                        .startsWith("#"))
-                .collect(Collectors.toList());
+            .filter(input -> input != null && input.getPlayerName() != null && !input.getPlayerName()
+                .startsWith("#"))
+            .collect(Collectors.toList());
 
         if (list.size() > 15) {
             scores = Lists.newArrayList(Iterables.skip(list, scores.size() - 15));
@@ -45,6 +45,17 @@ public class ScoreboardUtils {
         }
 
         return lines;
+    }
+
+    public static String getScoreboardTitle() {
+        if (mc.theWorld == null) return "";
+        Scoreboard scoreboard = mc.theWorld.getScoreboard();
+        if (scoreboard == null) return "";
+
+        ScoreObjective objective = scoreboard.getObjectiveInDisplaySlot(1);
+        if (objective == null) return "";
+
+        return StringUtils.stripControlCodes(objective.getDisplayName());
     }
 
     public static String cleanSB(String scoreboard) {
@@ -68,5 +79,4 @@ public class ScoreboardUtils {
             return "";
         }
     }
-
 }

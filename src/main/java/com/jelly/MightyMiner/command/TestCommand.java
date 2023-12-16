@@ -9,10 +9,12 @@ import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
 import com.jelly.MightyMiner.features.impl.general.AutoAotv;
 import com.jelly.MightyMiner.features.impl.general.AutoInventory;
 import com.jelly.MightyMiner.features.impl.general.AutoMithrilMiner;
+import com.jelly.MightyMiner.features.impl.general.LocationTracker;
 import com.jelly.MightyMiner.features.impl.helper.RouteNode;
 import com.jelly.MightyMiner.features.impl.helper.TransportMethod;
 import com.jelly.MightyMiner.utils.BlockUtil;
 import com.jelly.MightyMiner.utils.DrawUtils;
+import com.jelly.MightyMiner.utils.LogUtils;
 import com.jelly.MightyMiner.utils.RaytracingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
@@ -37,17 +39,7 @@ public class TestCommand {
 
     @Main
     public void main() {
-//        AutoMithrilMiner.getInstance().enable(0, 0, false, true);
-        List<RouteNode> LAVA_ETHERWARPLESS_1 = Arrays.asList(
-            new RouteNode(new BlockPos(4, 160, -43), TransportMethod.FLY),
-            new RouteNode(new BlockPos(9, 175, -12), TransportMethod.FLY),
-            new RouteNode(new BlockPos(27, 206, -13), TransportMethod.FLY),
-            new RouteNode(new BlockPos(54, 218, -12), TransportMethod.FLY),
-            new RouteNode(new BlockPos(55, 226, -32), TransportMethod.FLY),
-            new RouteNode(new BlockPos(56, 222, -30), TransportMethod.FLY)
-        );
-//        AutoAotv.getInstance().enable(LAVA_ETHERWARPLESS_1, false);
-        AutoMithrilMiner.getInstance().enable(0, 0, false, false);
+        LogUtils.addNote("Location: " + LocationTracker.getInstance().getLocation() + " SubLoc: " + LocationTracker.getInstance().getSubLocation());
     }
 
     @SubCommand(aliases = {"stop", "sf"})
