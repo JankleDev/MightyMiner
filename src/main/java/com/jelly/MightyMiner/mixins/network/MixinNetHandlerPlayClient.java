@@ -1,24 +1,14 @@
 package com.jelly.MightyMiner.mixins.network;
 
-import com.jelly.MightyMiner.MightyMiner;
+import com.jelly.MightyMiner.events.ScoreboardUpdateEvent;
 import com.jelly.MightyMiner.handlers.MacroHandler;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
 import net.minecraft.network.play.server.*;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IChatComponent;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.crypto.Mac;
 
 @Mixin(NetHandlerPlayClient.class)
 public class MixinNetHandlerPlayClient {
@@ -32,4 +22,18 @@ public class MixinNetHandlerPlayClient {
 
     }
 
+    // Turns out skyblock sucks a lot of balls
+    // Like a lot
+    // A lot lot
+    // A massive amount
+    // And it has to update its "Skyblock" text color which nobody gives a shit about
+    // so this event is gonna fire way too often
+    // but its better than checking every frame so yes
+    // i still hat eskyblockforthis
+    // credits to xai (xaine) and the other dude
+    // i think both got banned
+    @Inject(method = "handleScoreboardObjective", at = @At("RETURN"))
+    public void handleScoreboardObjective(S3BPacketScoreboardObjective packetIn, CallbackInfo ci){
+        MinecraftForge.EVENT_BUS.post(new ScoreboardUpdateEvent());
+    }
 }

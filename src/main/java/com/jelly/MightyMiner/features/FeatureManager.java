@@ -28,7 +28,9 @@ public class FeatureManager {
             AutoAotv.getInstance(),
 
             //Passive
-            LocationTracker.getInstance()
+            LocationTracker.getInstance(),
+            InfoBarTracker.getInstance(),
+            ScoreboardTracker.getInstance()
         );
         return this.features;
     }

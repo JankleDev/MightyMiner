@@ -6,10 +6,7 @@ import cc.polyfrost.oneconfig.utils.commands.annotations.SubCommand;
 import com.jelly.MightyMiner.features.FeatureManager;
 import com.jelly.MightyMiner.features.IFeature;
 import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
-import com.jelly.MightyMiner.features.impl.general.AutoAotv;
-import com.jelly.MightyMiner.features.impl.general.AutoInventory;
-import com.jelly.MightyMiner.features.impl.general.AutoMithrilMiner;
-import com.jelly.MightyMiner.features.impl.general.LocationTracker;
+import com.jelly.MightyMiner.features.impl.general.*;
 import com.jelly.MightyMiner.features.impl.helper.RouteNode;
 import com.jelly.MightyMiner.features.impl.helper.TransportMethod;
 import com.jelly.MightyMiner.utils.BlockUtil;
@@ -39,7 +36,9 @@ public class TestCommand {
 
     @Main
     public void main() {
-        LogUtils.addNote("Location: " + LocationTracker.getInstance().getLocation() + " SubLoc: " + LocationTracker.getInstance().getSubLocation());
+        InfoBarTracker ib = InfoBarTracker.getInstance();
+        LogUtils.addNote("Mana Percentage: " + ib.getManaPercentage() + ", Current: " + ib.getCurrentMana() + ", Max: " + ib.getMaxMana());
+        LogUtils.addNote("Health Percentage: " + ib.getHealthPercentage() + ", Current: " + ib.getCurrentHealth() + ", Max: " + ib.getMaxHealth());
     }
 
     @SubCommand(aliases = {"stop", "sf"})

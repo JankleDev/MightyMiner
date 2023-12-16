@@ -4,6 +4,7 @@ import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
 import com.jelly.MightyMiner.features.impl.general.AutoInventory;
 import com.jelly.MightyMiner.features.impl.general.AutoMithrilMiner;
 import com.jelly.MightyMiner.features.impl.general.AutoRotation;
+import com.jelly.MightyMiner.features.impl.general.LocationTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -17,4 +18,5 @@ public interface Helper {
     AutoRotation autoRotation = AutoRotation.getInstance();
     AutoMithrilMiner mithrilMiner = AutoMithrilMiner.getInstance();
     AutoInventory autoInventory = AutoInventory.getInstance();
+    LocationTracker locationTracker = LocationTracker.getInstance();
 }
