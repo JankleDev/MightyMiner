@@ -22,18 +22,12 @@ public class MixinNetHandlerPlayClient {
 
     }
 
-    // Turns out skyblock sucks a lot of balls
-    // Like a lot
-    // A lot lot
-    // A massive amount
-    // And it has to update its "Skyblock" text color which nobody gives a shit about
-    // so this event is gonna fire way too often
-    // but its better than checking every frame so yes
-    // i still hat eskyblockforthis
-    // credits to xai (xaine) and the other dude
-    // i think both got banned
-    @Inject(method = "handleScoreboardObjective", at = @At("RETURN"))
-    public void handleScoreboardObjective(S3BPacketScoreboardObjective packetIn, CallbackInfo ci){
+    @Inject(method = "handleDisplayScoreboard", at = @At("RETURN"))
+    public void handleUpdateScore(S3DPacketDisplayScoreboard packetIn, CallbackInfo ci){
+        System.out.println();
+        System.out.println("Position: " + packetIn.func_149371_c());
+        System.out.println("Name: " + packetIn.func_149370_d());
+        System.out.println();
         MinecraftForge.EVENT_BUS.post(new ScoreboardUpdateEvent());
     }
 }

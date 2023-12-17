@@ -13,6 +13,8 @@ import net.minecraft.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ScoreboardUtils {
@@ -45,6 +47,36 @@ public class ScoreboardUtils {
         }
 
         return lines;
+    }
+
+    public static List<String> getCleanScoreboard() {
+        List<String> scoreboard = new ArrayList<>();
+        for (int i = getScoreboardLines().size() - 1; i >= 0; i--) {
+            scoreboard.add(cleanSB(getScoreboardLines().get(i)));
+        }
+        return scoreboard;
+    }
+
+    public static int getCoinsInPurse() {
+        Pattern coinsPattern = Pattern.compile("(Purse|Piggy):\\s+(\\d+)");
+        for (String line : getCleanScoreboard()) {
+            if (!(line.contains("Purse") || line.contains("Piggy"))) continue;
+            Matcher coinMatcher = coinsPattern.matcher(line.replace(",", ""));
+            if (!coinMatcher.find()) return -1;
+            return Integer.parseInt(coinMatcher.group(coinMatcher.groupCount()));
+        }
+        return -1;
+    }
+
+    public static int getTotalBits() { // hehe.. tits
+        Pattern bitsPattern = Pattern.compile("Bits:\\s+(\\d+)");
+        for (String line : getCleanScoreboard()) {
+            if (!line.contains("Bits")) continue;
+            Matcher coinMatcher = bitsPattern.matcher(line.replace(",", ""));
+            if (!coinMatcher.find()) return -1;
+            return Integer.parseInt(coinMatcher.group(coinMatcher.groupCount()));
+        }
+        return -1;
     }
 
     public static String getScoreboardTitle() {

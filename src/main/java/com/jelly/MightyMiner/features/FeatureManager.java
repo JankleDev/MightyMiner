@@ -26,11 +26,11 @@ public class FeatureManager {
             AutoMithrilMiner.getInstance(),
             AutoInventory.getInstance(),
             AutoAotv.getInstance(),
+            AutoWarp.getInstance(),
 
             //Passive
             LocationTracker.getInstance(),
-            InfoBarTracker.getInstance(),
-            ScoreboardTracker.getInstance()
+            InfoBarTracker.getInstance()
         );
         return this.features;
     }

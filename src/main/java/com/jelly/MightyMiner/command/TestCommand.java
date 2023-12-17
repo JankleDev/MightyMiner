@@ -9,10 +9,8 @@ import com.jelly.MightyMiner.features.impl.commissionmacro.AutoCommissionClaim;
 import com.jelly.MightyMiner.features.impl.general.*;
 import com.jelly.MightyMiner.features.impl.helper.RouteNode;
 import com.jelly.MightyMiner.features.impl.helper.TransportMethod;
-import com.jelly.MightyMiner.utils.BlockUtil;
-import com.jelly.MightyMiner.utils.DrawUtils;
-import com.jelly.MightyMiner.utils.LogUtils;
-import com.jelly.MightyMiner.utils.RaytracingUtils;
+import com.jelly.MightyMiner.utils.*;
+import com.jelly.MightyMiner.utils.HypixelUtils.ScoreboardUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -25,6 +23,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Command(value = "set")
 public class TestCommand {
@@ -36,9 +36,7 @@ public class TestCommand {
 
     @Main
     public void main() {
-        InfoBarTracker ib = InfoBarTracker.getInstance();
-        LogUtils.addNote("Mana Percentage: " + ib.getManaPercentage() + ", Current: " + ib.getCurrentMana() + ", Max: " + ib.getMaxMana());
-        LogUtils.addNote("Health Percentage: " + ib.getHealthPercentage() + ", Current: " + ib.getCurrentHealth() + ", Max: " + ib.getMaxHealth());
+        AutoWarp.getInstance().enable(null, LocationTracker.SubLocation.THE_FORGE, false);
     }
 
     @SubCommand(aliases = {"stop", "sf"})

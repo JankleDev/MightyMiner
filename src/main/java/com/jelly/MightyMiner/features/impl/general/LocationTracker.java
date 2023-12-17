@@ -52,8 +52,11 @@ public class LocationTracker extends AbstractFeature {
         return true; // Should be MacroHandler.enabled
     }
 
+    public boolean isInSkyblock(){
+        return this.location != Location.LIMBO && this.location != Location.LOBBY;
+    }
 
-    enum Location {
+    public enum Location {
         PRIVATE_ISLAND("Private Island"),
         HUB("Hub"),
         THE_PARK("The Park"),
@@ -81,7 +84,7 @@ public class LocationTracker extends AbstractFeature {
     }
 
     // I know this is useless bite me
-    enum SubLocation {
+    public enum SubLocation {
         NOWHERE("Nowhere"),
 
         // <editor-fold desc="The Hub">
@@ -117,6 +120,10 @@ public class LocationTracker extends AbstractFeature {
         VILLAGE("Village"),
         WILDERNESS("Wilderness"),
         WIZARD_TOWER("Wizard Tower"),
+
+        // These locations dont exist
+        SIRIUS_SHACK("Sirius Shack"),
+        CRYPTS("Crypts"),
         // </editor-fold>
 
         // <editor-fold desc="The Park">
@@ -183,6 +190,7 @@ public class LocationTracker extends AbstractFeature {
         // </editor-fold>
 
         // <editor-fold desc="Crystal Hollows">
+        CRYSTAL_NUCLEUS("Crystal Nucleus"), // IDK if this exists or not
         CRYSTAL_HOLLOWS("Crystal Hollows"),
         CRYSTAL_NUCLEUS_DRAGONS_LAIR("Crystal Nucleus Dragon's Lair"),
         FAIRY_GROTTO("Fairy Grotto"),
