@@ -182,7 +182,7 @@ public class AutoWarp extends AbstractFeature {
     }
 
     private void sendCommand(String command) {
-        mc.thePlayer.sendChatMessage("/warp " + command);
+        mc.thePlayer.sendChatMessage(command);
     }
 
     private String getWarpCommand(Location location) {
@@ -192,7 +192,7 @@ public class AutoWarp extends AbstractFeature {
     }
 
     private String getWarpCommand(SubLocation subLocation) {
-        return SUBLOCATION_WARP_COMMANDS.get(subLocation);
+        return "/warp " + SUBLOCATION_WARP_COMMANDS.get(subLocation);
     }
 
     private final HashMap<Location, String> LOCATION_WARP_COMMANDS = new HashMap<Location, String>() {{
